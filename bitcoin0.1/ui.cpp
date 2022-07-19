@@ -329,8 +329,12 @@ CMainFrame::CMainFrame(wxWindow* parent) : CMainFrameBase(parent)
 
     // Fill your address text box
     vector<unsigned char> vchPubKey;
-    if (CWalletDB("r").ReadDefaultKey(vchPubKey))
-        m_textCtrlAddress->SetValue(PubKeyToAddress(vchPubKey));
+	if (CWalletDB("r").ReadDefaultKey(vchPubKey))
+	{
+		auto str = PubKeyToAddress(vchPubKey);
+		m_textCtrlAddress->SetValue(str);
+	}
+        
 
     // Fill listctrl with wallet transactions
     RefreshListCtrl();
@@ -1820,7 +1824,7 @@ void CYourAddressDialog::OnButtonRename(wxCommandEvent& event)
     m_listCtrl->SetItemText(nIndex, strName);
     pframeMain->RefreshListCtrl();
 }
-
+//zidi: generate new address base on name
 void CYourAddressDialog::OnButtonNew(wxCommandEvent& event)
 {
     // Ask name

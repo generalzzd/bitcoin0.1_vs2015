@@ -853,7 +853,6 @@ void ThreadMessageHandler2(void* parg)
 
 
 
-
 //// todo: start one thread per processor, use getenv("NUMBER_OF_PROCESSORS")
 void ThreadBitcoinMiner(void* parg)
 {

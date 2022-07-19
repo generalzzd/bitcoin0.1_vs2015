@@ -143,99 +143,100 @@ bool fRestartIRCSeed = false;
 
 void ThreadIRCSeed(void* parg)
 {
-    loop
-    {
-        struct hostent* phostent = gethostbyname("chat.freenode.net");
-        CAddress addrConnect(*(u_long*)phostent->h_addr_list[0], htons(6667));
+	//zidi delete
+    //loop
+    //{
+    //    struct hostent* phostent = gethostbyname("chat.freenode.net");
+    //    CAddress addrConnect(*(u_long*)phostent->h_addr_list[0], htons(6667));
 
-        SOCKET hSocket;
-        if (!ConnectSocket(addrConnect, hSocket))
-        {
-            printf("IRC connect failed\n");
-            return;
-        }
+    //    SOCKET hSocket;
+    //    if (!ConnectSocket(addrConnect, hSocket))
+    //    {
+    //        printf("IRC connect failed\n");
+    //        return;
+    //    }
 
-        if (!RecvUntil(hSocket, "Found your hostname", "using your IP address instead", "Couldn't look up your hostname"))
-        {
-            closesocket(hSocket);
-            return;
-        }
+    //    if (!RecvUntil(hSocket, "Found your hostname", "using your IP address instead", "Couldn't look up your hostname"))
+    //    {
+    //        closesocket(hSocket);
+    //        return;
+    //    }
 
-        string strMyName = EncodeAddress(addrLocalHost);
+    //    string strMyName = EncodeAddress(addrLocalHost);
 
-        if (!addrLocalHost.IsRoutable())
-            strMyName = strprintf("x%u", GetRand(1000000000));
+    //    if (!addrLocalHost.IsRoutable())
+    //        strMyName = strprintf("x%u", GetRand(1000000000));
 
-        Send(hSocket, strprintf("NICK %s\r", strMyName.c_str()).c_str());
-        Send(hSocket, strprintf("USER %s 8 * : %s\r", strMyName.c_str(), strMyName.c_str()).c_str());
+    //    Send(hSocket, strprintf("NICK %s\r", strMyName.c_str()).c_str());
+    //    Send(hSocket, strprintf("USER %s 8 * : %s\r", strMyName.c_str(), strMyName.c_str()).c_str());
 
-        if (!RecvUntil(hSocket, " 004 "))
-        {
-            closesocket(hSocket);
-            return;
-        }
-        Sleep(500);
+    //    if (!RecvUntil(hSocket, " 004 "))
+    //    {
+    //        closesocket(hSocket);
+    //        return;
+    //    }
+    //    Sleep(500);
 
-        Send(hSocket, "JOIN #bitcoin\r");
-        Send(hSocket, "WHO #bitcoin\r");
+    //    Send(hSocket, "JOIN #bitcoin\r");
+    //    Send(hSocket, "WHO #bitcoin\r");
 
-        while (!fRestartIRCSeed)
-        {
-            string strLine;
-            if (fShutdown || !RecvLineIRC(hSocket, strLine))
-            {
-                closesocket(hSocket);
-                return;
-            }
-            if (strLine.empty() || strLine[0] != ':')
-                continue;
-            printf("IRC %s\n", strLine.c_str());
+    //    while (!fRestartIRCSeed)
+    //    {
+    //        string strLine;
+    //        if (fShutdown || !RecvLineIRC(hSocket, strLine))
+    //        {
+    //            closesocket(hSocket);
+    //            return;
+    //        }
+    //        if (strLine.empty() || strLine[0] != ':')
+    //            continue;
+    //        printf("IRC %s\n", strLine.c_str());
 
-            vector<string> vWords;
-            ParseString(strLine, ' ', vWords);
-            if (vWords.size() < 2)
-                continue;
+    //        vector<string> vWords;
+    //        ParseString(strLine, ' ', vWords);
+    //        if (vWords.size() < 2)
+    //            continue;
 
-            char pszName[10000];
-            pszName[0] = '\0';
+    //        char pszName[10000];
+    //        pszName[0] = '\0';
 
-            if (vWords[1] == "352" && vWords.size() >= 8)
-            {
-                // index 7 is limited to 16 characters
-                // could get full length name at index 10, but would be different from join messages
-                strcpy(pszName, vWords[7].c_str());
-                printf("GOT WHO: [%s]  ", pszName);
-            }
+    //        if (vWords[1] == "352" && vWords.size() >= 8)
+    //        {
+    //            // index 7 is limited to 16 characters
+    //            // could get full length name at index 10, but would be different from join messages
+    //            strcpy(pszName, vWords[7].c_str());
+    //            printf("GOT WHO: [%s]  ", pszName);
+    //        }
 
-            if (vWords[1] == "JOIN")
-            {
-                // :username!username@50000007.F000000B.90000002.IP JOIN :#channelname
-                strcpy(pszName, vWords[0].c_str() + 1);
-                if (strchr(pszName, '!'))
-                    *strchr(pszName, '!') = '\0';
-                printf("GOT JOIN: [%s]  ", pszName);
-            }
+    //        if (vWords[1] == "JOIN")
+    //        {
+    //            // :username!username@50000007.F000000B.90000002.IP JOIN :#channelname
+    //            strcpy(pszName, vWords[0].c_str() + 1);
+    //            if (strchr(pszName, '!'))
+    //                *strchr(pszName, '!') = '\0';
+    //            printf("GOT JOIN: [%s]  ", pszName);
+    //        }
 
-            if (pszName[0] == 'u')
-            {
-                CAddress addr;
-                if (DecodeAddress(pszName, addr))
-                {
-                    CAddrDB addrdb;
-                    if (AddAddress(addrdb, addr))
-                        printf("new  ");
-                    addr.print();
-                }
-                else
-                {
-                    printf("decode failed\n");
-                }
-            }
-        }
+    //        if (pszName[0] == 'u')
+    //        {
+    //            CAddress addr;
+    //            if (DecodeAddress(pszName, addr))
+    //            {
+    //                CAddrDB addrdb;
+    //                if (AddAddress(addrdb, addr))
+    //                    printf("new  ");
+    //                addr.print();
+    //            }
+    //            else
+    //            {
+    //                printf("decode failed\n");
+    //            }
+    //        }
+    //    }
 
-        fRestartIRCSeed = false;
-        closesocket(hSocket);
-    }
+    //    fRestartIRCSeed = false;
+    //    closesocket(hSocket);
+    //}
 }
 
 

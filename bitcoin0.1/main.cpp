@@ -1416,7 +1416,7 @@ FILE* AppendBlockFile(unsigned int& nFileRet)
         nCurrentBlockFile++;
     }
 }
-
+//zidi: init genesis block
 bool LoadBlockIndex(bool fAllowNew)
 {
     //
@@ -2179,7 +2179,7 @@ void BlockSHA256(const void* pin, unsigned int nBlocks, void* pout)
     }
 }
 
-
+//zidi: bitcoin miner
 bool BitcoinMiner()
 {
     printf("BitcoinMiner started\n");
