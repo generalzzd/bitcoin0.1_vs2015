@@ -2510,7 +2510,7 @@ bool SelectCoins(int64 nTargetValue, set<CWalletTx*>& setCoinsRet)
 
 
 
-
+//zidi: create transactions
 bool CreateTransaction(CScript scriptPubKey, int64 nValue, CWalletTx& wtxNew, int64& nFeeRequiredRet)
 {
     nFeeRequiredRet = 0;
@@ -2621,7 +2621,7 @@ bool CommitTransactionSpent(const CWalletTx& wtxNew)
 
 
 
-
+//zidi: send money and create transactions
 bool SendMoney(CScript scriptPubKey, int64 nValue, CWalletTx& wtxNew)
 {
     CRITICAL_BLOCK(cs_main)
@@ -2658,3 +2658,5 @@ bool SendMoney(CScript scriptPubKey, int64 nValue, CWalletTx& wtxNew)
     MainFrameRepaint();
     return true;
 }
+
+//https://andersbrownworth.com/blockchain/

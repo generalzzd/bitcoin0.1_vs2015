@@ -118,7 +118,10 @@
     <ClCompile Include="sha.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bignum.h" />
+    <ClInclude Include="key.h" />
     <ClInclude Include="sha.h" />
+    <ClInclude Include="ZDBitcoin.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
